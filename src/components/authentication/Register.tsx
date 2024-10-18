@@ -10,6 +10,35 @@ export const Register = ({
   const [isPassValid, setPassValidity] = useState<boolean>(true);
   const [isEmailValid, setEmailValidity] = useState<boolean>(true);
   const [isCnfPassValid, setCnfPassValid] = useState<boolean>(true);
+  const [cnfPass, setCnfPass] = useState<string>("");
+
+  //get baseurl from .env file
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
+  const handleSubmit = async (e: React.BaseSyntheticEvent<Event>) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    //make a post request to register user
+    console.log("make a post");
+    try {
+      const response = await fetch(`${apiBaseUrl}/register`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.get("email"),
+          password: formData.get("password"),
+          cnfPassword: formData.get("cnfPassword"),
+        }),
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handlePassValidation = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
@@ -23,10 +52,8 @@ export const Register = ({
     const result = validEmailPatter.test(e.target.value);
     result ? setEmailValidity(true) : setEmailValidity(false);
   };
-  const handleCnfPassValidation = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.target.value === password
-      ? setCnfPassValid(true)
-      : setCnfPassValid(false);
+  const handleCnfPassValidation = () => {
+    cnfPass === password ? setCnfPassValid(true) : setCnfPassValid(false);
   };
 
   return (
@@ -58,7 +85,13 @@ export const Register = ({
           />
         </svg>
         <h3 className="mb-[42px]">Create your account</h3>
-        <form action="" className="w-[350px] ">
+        <form
+          onSubmit={(e) => {
+            handleSubmit(e);
+          }}
+          method="POST"
+          className="w-[350px]"
+        >
           {/*This is for Email input field */}
           <div className="w-[100%] h-[106px]">
             <label htmlFor="email">
@@ -86,6 +119,7 @@ export const Register = ({
                   className=" h-[36px] text-[18px] bg-[#242424] w-[80%] outline-none border-none"
                   id="email"
                   name="email"
+                  required
                 ></input>
               </div>
             </label>
@@ -114,10 +148,12 @@ export const Register = ({
                   onChange={(e) => {
                     handlePassValidation(e);
                   }}
+                  onBlur={handleCnfPassValidation}
                   type={isPassVisible ? "text" : "password"}
                   className=" h-[36px] ml-2 text-[18px]  bg-[#242424] outline-none border-none"
                   id="password"
                   name="password"
+                  required
                 ></input>
                 <span
                   onClick={() => setPassVisible(!isPassVisible)}
@@ -151,11 +187,15 @@ export const Register = ({
                   />
                 </svg>
                 <input
-                  onChange={(e) => handleCnfPassValidation(e)}
-                  type="text"
+                  onChange={(e) => {
+                    setCnfPass(e.target.value);
+                  }}
+                  onBlur={handleCnfPassValidation}
+                  type="password"
                   className=" h-[36px] text-[18px] bg-[#242424] w-[80%] outline-none border-none"
                   id="cnfPassword"
                   name="cnfPassword"
+                  required
                 ></input>
               </div>
             </label>
@@ -168,7 +208,8 @@ export const Register = ({
           <input
             id="submit-button"
             type="submit"
-            aria-label="submit-form"
+            placeholder="Register"
+            value={"Sign up"}
             className="bg-purple-500 outline-none border-solid border-purple-800 text-[18px] rounded bg-transparent w-[100%] h-[42px] mb-2 cursor-pointer"
           />
         </form>
