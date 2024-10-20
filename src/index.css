@@ -24,3 +24,7 @@
 #submit-button:hover {
   background-color: rgba(169, 85, 247, 0.4);
 }
+#popForErrNotification {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(3px);
+}

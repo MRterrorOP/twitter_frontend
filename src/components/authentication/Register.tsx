@@ -11,6 +11,7 @@ export const Register = ({
   const [isEmailValid, setEmailValidity] = useState<boolean>(true);
   const [isCnfPassValid, setCnfPassValid] = useState<boolean>(true);
   const [cnfPass, setCnfPass] = useState<string>("");
+  const [msgAfterSubmit, setMsgAfterSubmit] = useState("");
 
   //get baseurl from .env file
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
@@ -34,7 +35,7 @@ export const Register = ({
         }),
       });
       const data = await response.json();
-      console.log(data);
+      setMsgAfterSubmit(data.message);
     } catch (error) {
       console.log(error);
     }
@@ -222,6 +223,23 @@ export const Register = ({
             Login
           </a>
         </span>
+      </div>
+      <div
+        id="popForErrNotification"
+        className={`${
+          msgAfterSubmit ? "block" : "hidden"
+        }  absolute z-40  rounded-lg flex flex-col justify-center items-center bg-white/30  w-[40vw] h-[50vh]`}
+      >
+        {/*This is message send by backend whether user is created or something wrong with form Data*/}
+        <p>{msgAfterSubmit}</p>
+        <button
+          onClick={() => {
+            setMsgAfterSubmit("");
+          }}
+          className="w-[80px] h-[30px] cursor-pointer hover:bg-purple-500/40  outline-none border-none rounded"
+        >
+          Okay
+        </button>
       </div>
     </div>
   );
