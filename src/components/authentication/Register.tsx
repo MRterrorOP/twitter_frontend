@@ -228,15 +228,17 @@ export const Register = ({
         id="popForErrNotification"
         className={`${
           msgAfterSubmit ? "block" : "hidden"
-        }  absolute z-40  rounded-lg flex flex-col justify-center items-center bg-white/30  w-[40vw] h-[50vh]`}
+        }  absolute z-40  rounded-lg flex flex-col justify-center items-center bg-white/30  w-[80vw] sm:w-[40vw] h-[50vh]`}
       >
         {/*This is message send by backend whether user is created or something wrong with form Data*/}
-        <p>{msgAfterSubmit}</p>
+        <p className="w-[80%] text-wrap text-2xl text-center">
+          {msgAfterSubmit}
+        </p>
         <button
           onClick={() => {
             setMsgAfterSubmit("");
           }}
-          className="w-[80px] h-[30px] cursor-pointer hover:bg-purple-500/40  outline-none border-none rounded"
+          className="w-[80px] h-[30px] cursor-pointer border-2 border-solid bg-[#343638]  hover:border-purple-500  outline-none border-transparent rounded"
         >
           Okay
         </button>
