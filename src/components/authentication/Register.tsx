@@ -58,7 +58,7 @@ export const Register = ({
   };
 
   return (
-    <div className="flex gap-x-2 justify-center items-center mt-[10vh] w-[96%] mx-auto ">
+    <div className="flex gap-x-2 justify-center items-center h-screen w-[96%] mx-auto ">
       <div className="w-[40%] hidden xl:block  ">
         <h1 className="text-5xl leading-12 my-4">
           Let's build a community together for a better{" "}
